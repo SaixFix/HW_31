@@ -14,3 +14,15 @@ class Data:
                 data_dict.append(row)
 
             return json.dumps(data_dict, ensure_ascii=False)
+
+    @staticmethod
+    def categories_csv_to_json() -> json:
+        with open('./datasets/categories.csv', newline='') as file:
+            reader = csv.DictReader(file)
+
+            data_dict = []
+
+            for row in reader:
+                data_dict.append(row)
+
+            return json.dumps(data_dict, ensure_ascii=False)
