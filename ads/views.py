@@ -1,9 +1,10 @@
+import json
+
 from django.http import JsonResponse
-from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import ListView, DetailView
+from django.views.generic import DetailView
 
 from ads.models import Categories, ADS
 
@@ -13,19 +14,30 @@ def hello(request):
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class CategoriesListView(ListView):
-    model = Categories
-
-    def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
-
+class CategoriesView(View):
+    def get(self, request):
+        categories = Categories.objects.all()
         response = []
-        for category in self.object_list:
+        for category in categories:
             response.append({
                 "id": category.id,
                 'name': category.name
             })
+
         return JsonResponse(response, safe=False)
+
+    def post(self, request):
+        category_data = json.loads(request.body)
+
+        category = Categories()
+        category.name = category_data["name"]
+
+        category.save()
+
+        return JsonResponse({
+                "id": category.id,
+                'name': category.name
+            })
 
 
 class CategoriesDetailView(DetailView):
@@ -41,21 +53,42 @@ class CategoriesDetailView(DetailView):
         })
 
 
-class AdListView(ListView):
-    model = ADS
+class AdView(View):
 
-    def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
-
+    def get(self, request):
+        ads = ADS.objects.all()
         response = []
-        for ad in self.object_list:
+        for ad in ads:
             response.append({
                 "id": ad.id,
                 'name': ad.name,
                 "author": ad.author,
                 "price": ad.price
             })
+
         return JsonResponse(response, safe=False)
+
+    def post(self, request):
+        ad_data = json.loads(request.body)
+
+        ad = ADS()
+        ad.name = ad_data["name"]
+        ad.author = ad_data["author"]
+        ad.price = ad_data["price"]
+        ad.description = ad_data["description"]
+        ad.address = ad_data["address"]
+        ad.is_published = ad_data["is_published"]
+
+        ad.save()
+
+        return JsonResponse({
+                "id": ad.id,
+                'name': ad.name,
+                "author": ad.author,
+                "description": ad.description,
+                "address": ad.address,
+                "is_published": ad.is_published
+        })
 
 
 class AdDetailView(DetailView):
