@@ -25,5 +25,7 @@ def ads_csv_to_json(csv_file: csv, json_file: json, model: models):
         file.write(json.dumps(data_list, ensure_ascii=False))
 
 
-ads_csv_to_json('./datasets/ads.csv', './datasets/ads.json', 'ads.ads')
-ads_csv_to_json('./datasets/categories.csv', './datasets/categories.json', 'ads.categories')
+ads_csv_to_json('./datasets/ad.csv', './datasets/ads.json', 'ads.ads')
+ads_csv_to_json('./datasets/category.csv', './datasets/category.json', 'ads.categories')
+ads_csv_to_json('./datasets/location.csv', './datasets/location.json', 'ads.locations')
+ads_csv_to_json('./datasets/user.csv', './datasets/user.json', 'ads.user')

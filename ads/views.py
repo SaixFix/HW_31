@@ -6,7 +6,7 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView
 
-from ads.models import Categories, ADS
+from ads.models import Category, AD
 
 
 def hello(request):
