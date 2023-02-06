@@ -1,5 +1,5 @@
 from django.contrib import admin
 
-from ads.models import AD, Location, Category
+from ads.models import AD
 
 admin.site.register(AD)

@@ -16,7 +16,7 @@ def hello(request):
 @method_decorator(csrf_exempt, name='dispatch')
 class CategoriesView(View):
     def get(self, request):
-        categories = Categories.objects.all()
+        categories = Category.objects.all()
         response = []
         for category in categories:
             response.append({
@@ -29,7 +29,7 @@ class CategoriesView(View):
     def post(self, request):
         category_data = json.loads(request.body)
 
-        category = Categories()
+        category = Category()
         category.name = category_data["name"]
 
         category.save()
@@ -71,7 +71,7 @@ class AdView(View):
     def post(self, request):
         ad_data = json.loads(request.body)
 
-        ad = ADS()
+        ad = AD()
         ad.name = ad_data["name"]
         ad.author = ad_data["author"]
         ad.price = ad_data["price"]
