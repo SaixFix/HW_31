@@ -20,7 +20,7 @@ class AD(models.Model):
     price = models.IntegerField()
     description = models.CharField(max_length=2000)
     is_published = models.BooleanField(default=False)
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
     category_id = models.ForeignKey("Category", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):

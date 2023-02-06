@@ -20,12 +20,16 @@ def ads_csv_to_json(csv_file: csv, json_file: json, model: models):
             if "is_published" in data_dict["fields"]:
                 data_dict["fields"]["is_published"] = bool(data_dict["fields"]["is_published"])
 
+            if "location_id" in row:
+                row["locations"] = [row["location_id"]]
+                del row["location_id"]
+
             data_list.append(data_dict)
     with open(json_file, 'w', encoding='utf-8') as file:
         file.write(json.dumps(data_list, ensure_ascii=False))
 
 
-ads_csv_to_json('./datasets/ad.csv', './datasets/ads.json', 'ads.ads')
-ads_csv_to_json('./datasets/category.csv', './datasets/category.json', 'ads.categories')
-ads_csv_to_json('./datasets/location.csv', './datasets/location.json', 'users.locations')
-ads_csv_to_json('./datasets/user.csv', './datasets/user.json', 'users.user')
+ads_csv_to_json('ad.csv', 'ad.json', 'ads.ad')
+ads_csv_to_json('category.csv', 'category.json', 'ads.category')
+ads_csv_to_json('location.csv', 'location.json', 'users.location')
+ads_csv_to_json('user.csv', 'user.json', 'users.user')

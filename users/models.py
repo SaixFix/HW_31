@@ -11,15 +11,16 @@ class Location(models.Model):
 
 
 class UserRoles(models.TextChoices):
-    MEMBER = 'MB', _('member') #1 значение в базу, 2 для отображения
-    MODERATOR = "MD", _('moderator')
-    ADMIN = "AD", _('admin')
+    MEMBER = 'member', _('member') #1 значение в базу, 2 для отображения
+    MODERATOR = 'moderator', _('moderator')
+    ADMIN = 'admin', _('admin')
 
 
 class User(models.Model):
     first_name = models.CharField(max_length=50, null=True)
     last_name = models.CharField(max_length=50, null=True)
-    username = models.CharField(max_length=10, unique=True)
-    role = models.CharField(max_length=2, choices=UserRoles.choices)
+    username = models.CharField(max_length=50, unique=True)
+    password = models.CharField(max_length=200, null=True)
+    role = models.CharField(max_length=9, choices=UserRoles.choices)
     age = models.PositiveSmallIntegerField()
-    location_id = models.ManyToManyField(Location)
+    locations = models.ManyToManyField(Location)
