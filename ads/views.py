@@ -41,7 +41,7 @@ class CategoriesView(View):
 
 
 class CategoriesDetailView(DetailView):
-    model = Categories
+    model = Category
 
     def get(self, request, *args, **kwargs):
         super().get(request, *args, **kwargs)
@@ -56,7 +56,7 @@ class CategoriesDetailView(DetailView):
 class AdView(View):
 
     def get(self, request):
-        ads = ADS.objects.all()
+        ads = AD.objects.all()
         response = []
         for ad in ads:
             response.append({
@@ -92,7 +92,7 @@ class AdView(View):
 
 
 class AdDetailView(DetailView):
-    model = ADS
+    model = AD
 
     def get(self, request, *args, **kwargs):
         super().get(request, *args, **kwargs)
