@@ -16,17 +16,13 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from ads import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.hello),
-    path('cat/', views.CategoriesView.as_view()),
-    path('cat/<int:pk>/', views.CategoriesDetailView.as_view()),
-    path('ad/', views.AdView.as_view()),
-    path('ad/<int:pk>/', views.AdDetailView.as_view())
+    path('cat/', include('ads.urls')),
 ]
 
 if settings.DEBUG:

@@ -9,6 +9,13 @@ class Location(models.Model):
     lat = models.DecimalField(max_digits=8, decimal_places=6, null=True)
     lng = models.DecimalField(max_digits=8, decimal_places=6, null=True)
 
+    class Meta:
+        verbose_name = 'Дислокация'
+        verbose_name_plural = 'Дислокации'
+
+    def __str__(self):
+        return self.name
+
 
 class UserRoles(models.TextChoices):
     MEMBER = 'member', _('member') #1 значение в базу, 2 для отображения
@@ -24,3 +31,11 @@ class User(models.Model):
     role = models.CharField(max_length=9, choices=UserRoles.choices)
     age = models.PositiveSmallIntegerField()
     locations = models.ManyToManyField(Location)
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+
+    def __str__(self):
+        return self.username
+
