@@ -9,8 +9,8 @@ urlpatterns = [
     path('<int:pk>/', AdDetailView.as_view(), name='get_ad_detail'),
     path('create/', AdCreateView.as_view(), name='create_categories'),
     path('<int:pk>/upload-image/', AdUploadImage.as_view(), name='ad_upload_image'),
-    # path('<int:pk>/update/', AdUpdateView.as_view(), name='update_ad'),
-    # path('<int:pk>/delete/', AdDeleteView.as_view(), name='delete_ad'),
+    path('<int:pk>/update/', AdUpdateView.as_view(), name='update_ad'),
+    path('<int:pk>/delete/', AdDeleteView.as_view(), name='delete_ad'),
 ]
 
 if settings.DEBUG:
