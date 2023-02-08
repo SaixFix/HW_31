@@ -13,7 +13,6 @@ def hello(request):
     return JsonResponse({"status": "ok"}, safe=False)
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class CategoriesListView(ListView):
     model = Category
 
@@ -64,7 +63,7 @@ class CategoriesUpdateView(UpdateView):
     model = Category
     fields = ['name']
 
-    def post(self, request, *args, **kwargs):
+    def patch(self, request, *args, **kwargs):
         super().post(self, request, *args, **kwargs)
         category_data = json.loads(request.body)
 
@@ -83,17 +82,19 @@ class CategoriesDeleteView(DeleteView):
     success_url = '/'
 
     def delete(self, request, *args, **kwargs):
+        cat = self.get_object()
         super().delete(self, request, *args, **kwargs)
 
         return JsonResponse({
-            "id": self.object.pk
+            "id": cat.pk
         })
 
 
-class AdView(View):
+class AdListView(ListView):
 
-    def get(self, request):
-        ads = AD.objects.all()
+    def get(self, request, *args, **kwargs):
+        super().get(request, *args, **kwargs)
+        ads = self.object_list()
         response = []
         for ad in ads:
             response.append({
