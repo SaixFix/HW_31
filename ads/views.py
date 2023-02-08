@@ -15,6 +15,7 @@ def hello(request):
 
 class CategoriesListView(ListView):
     model = Category
+    queryset = Category.objects.order_by('name')
 
     def get(self, request, *args, **kwargs):
         super().get(request, *args, **kwargs)
@@ -22,7 +23,7 @@ class CategoriesListView(ListView):
         response = []
         for category in categories:
             response.append({
-                "id": category.id,
+                'id': category.id,
                 'name': category.name
             })
 
@@ -37,7 +38,7 @@ class CategoriesDetailView(DetailView):
         self.object = self.get_object()
 
         return JsonResponse({
-            "id": self.object.id,
+            'id': self.object.id,
             'name': self.object.name
         })
 
@@ -91,42 +92,28 @@ class CategoriesDeleteView(DeleteView):
 
 
 class AdListView(ListView):
+    model = AD
+    queryset = AD.objects.order_by('-price')
 
     def get(self, request, *args, **kwargs):
         super().get(request, *args, **kwargs)
-        ads = self.object_list()
+        ads = self.object_list
         response = []
         for ad in ads:
             response.append({
                 "id": ad.id,
                 'name': ad.name,
-                "author": ad.author,
-                "price": ad.price
+                "author_id": ad.author_id.username,
+                "price": ad.price,
+                "description": ad.description,
+                "is_published": ad.is_published,
+                "category_id": ad.category_id.name,
+                "image": ad.image.url if ad.image else None
+
+
             })
 
         return JsonResponse(response, safe=False)
-
-    def post(self, request):
-        ad_data = json.loads(request.body)
-
-        ad = AD()
-        ad.name = ad_data["name"]
-        ad.author = ad_data["author"]
-        ad.price = ad_data["price"]
-        ad.description = ad_data["description"]
-        ad.address = ad_data["address"]
-        ad.is_published = ad_data["is_published"]
-
-        ad.save()
-
-        return JsonResponse({
-            "id": ad.id,
-            'name': ad.name,
-            "author": ad.author,
-            "description": ad.description,
-            "address": ad.address,
-            "is_published": ad.is_published
-        })
 
 
 class AdDetailView(DetailView):
@@ -139,6 +126,63 @@ class AdDetailView(DetailView):
         return JsonResponse({
             "id": self.object.id,
             'name': self.object.name,
-            "author": self.object.author,
-            "price": self.object.price
+            "author_id": self.object.author_id.username,
+            "price": self.object.price,
+            "description": self.object.description,
+            "is_published": self.object.is_published,
+            "category_id": self.object.category_id.name,
+            "image": self.object.image.url if self.object.image else None
         })
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class AdCreateView(CreateView):
+    model = AD
+    fields = "__all__"
+
+    def post(self, request, *args, **kwargs):
+        super().post(request, *args, **kwargs)
+        ad_data = json.loads(request.body)
+
+        ad = AD.objects.create(
+            name=ad_data["name"],
+            author_id=ad_data["author_id"],
+            price=ad_data["price"],
+            description=ad_data["description"],
+            is_published=ad_data["is_published"],
+            category_id=ad_data["author_id"],
+        )
+
+        return JsonResponse({
+            "id": ad.id,
+            'name': ad.name,
+            "author_id": ad.author_id.username,
+            "price": ad.price,
+            "description": ad.object.description,
+            "is_published": ad.object.is_published,
+            "category_id": ad.category_id.name,
+            "image": ad.image.url if ad.object.image else None
+        })
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class AdUploadImage(UpdateView):
+    model = AD
+    fields = "image"
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.image = request.FILES.get('image')
+        self.object.save()
+
+        return JsonResponse({
+            "id": self.object.id,
+            'name': self.object.name,
+            "author_id": self.object.author_id.username,
+            "price": self.object.price,
+            "description": self.object.description,
+            "is_published": self.object.is_published,
+            "category_id": self.object.category_id.name,
+            "image": self.object.image.url if self.object.image else None
+        })
+

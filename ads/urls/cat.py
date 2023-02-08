@@ -9,6 +9,4 @@ urlpatterns = [
     path('create/', CategoriesCreateView.as_view(), name='create_categories'),
     path('<int:pk>/update/', CategoriesUpdateView.as_view(), name='update_categories'),
     path('<int:pk>/delete/', CategoriesDeleteView.as_view(), name='delete_categories'),
-    path('ad/', AdView.as_view()),
-    path('ad/<int:pk>/', AdDetailView.as_view())
 ]
