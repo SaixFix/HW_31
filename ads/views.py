@@ -100,8 +100,8 @@ class AdListView(ListView):
 
     def get(self, request, *args, **kwargs):
         super().get(request, *args, **kwargs)
-        ads = self.object_list
 
+        # Пагинация
         paginator = Paginator(self.object_list, settings.OBJECT_ON_PAGE)
         page_num = request.GET.get('page', 1)
         page_obg = paginator.get_page(page_num)
@@ -155,6 +155,7 @@ class AdCreateView(CreateView):
     def post(self, request, *args, **kwargs):
         super().post(request, *args, **kwargs)
         ad_data = json.loads(request.body)
+        # получаем обьекты класса по заданному полю или 404
         author_id = get_object_or_404(User, pk=ad_data["author_id"])
         category_id = get_object_or_404(Category, pk=ad_data["category_id"])
 
@@ -209,6 +210,7 @@ class AdUpdateView(UpdateView):
     def patch(self, request, *args, **kwargs):
         super().post(self, request, *args, **kwargs)
         ad_data = json.loads(request.body)
+        # получаем обьекты класса по заданному полю или 404
         author_id = get_object_or_404(User, pk=ad_data["author_id"])
 
         if 'name' in ad_data:

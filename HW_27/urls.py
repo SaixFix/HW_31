@@ -19,11 +19,14 @@ from django.contrib import admin
 from django.urls import path, include
 
 from ads import views
+from ads.views import hello
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', hello),
     path('cat/', include('ads.urls.cat')),
     path('ad/', include('ads.urls.ad')),
+    path('user/', include('users.urls')),
 ]
 
 if settings.DEBUG:
