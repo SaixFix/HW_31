@@ -143,14 +143,16 @@ class AdCreateView(CreateView):
     def post(self, request, *args, **kwargs):
         super().post(request, *args, **kwargs)
         ad_data = json.loads(request.body)
+        author_id = get_object_or_404(User, pk=ad_data["author_id"])
+        category_id = get_object_or_404(Category, pk=ad_data["category_id"])
 
         ad = AD.objects.create(
             name=ad_data["name"],
-            author_id=get_object_or_404(User, pk=ad_data["author_id"]),
+            author_id=author_id,
             price=ad_data["price"],
             description=ad_data["description"],
             is_published=ad_data["is_published"],
-            category_id=get_object_or_404(Category, pk=ad_data["category_id"]),
+            category_id=category_id,
         )
 
         return JsonResponse({
