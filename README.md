@@ -1,3 +1,3 @@
-# HW_27
-HomeWork 27
-First work with django
+# HW_28
+HomeWork 28
+project based on hw_27. Was added models with relashions, crud methods, and functions add images, sorting some results
