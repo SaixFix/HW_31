@@ -1,5 +1,7 @@
 import json
 
+from django.conf import settings
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
@@ -99,9 +101,14 @@ class AdListView(ListView):
     def get(self, request, *args, **kwargs):
         super().get(request, *args, **kwargs)
         ads = self.object_list
-        response = []
-        for ad in ads:
-            response.append({
+
+        paginator = Paginator(self.object_list, settings.OBJECT_ON_PAGE)
+        page_num = request.GET.get('page', 1)
+        page_obg = paginator.get_page(page_num)
+
+        ads = []
+        for ad in page_obg:
+            ads.append({
                 "id": ad.id,
                 'name': ad.name,
                 "author_id": ad.author_id.username,
@@ -113,6 +120,11 @@ class AdListView(ListView):
 
             })
 
+        response = {
+            "items": ads,
+            "num_pages": paginator.num_pages,
+            "total": paginator.count
+        }
         return JsonResponse(response, safe=False)
 
 
