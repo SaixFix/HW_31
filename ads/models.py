@@ -13,7 +13,7 @@ class Category(models.Model):
         return self.name
 
 
-class AD(models.Model):
+class Ad(models.Model):
     slug = models.SlugField(max_length=50)
     name = models.CharField(max_length=200)
     author_id = models.ForeignKey("users.User", on_delete=models.CASCADE)

@@ -8,7 +8,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 
-from ads.models import Category, AD
+from ads.models import Category, Ad
+from ads.serializers import CategoryListSerializer
 from users.models import User
 
 
@@ -23,14 +24,8 @@ class CategoriesListView(ListView):
     def get(self, request, *args, **kwargs):
         super().get(request, *args, **kwargs)
         categories = self.object_list
-        response = []
-        for category in categories:
-            response.append({
-                'id': category.id,
-                'name': category.name
-            })
 
-        return JsonResponse(response, safe=False)
+        return JsonResponse(CategoryListSerializer(categories, many=True).data, safe=False)
 
 
 class CategoriesDetailView(DetailView):
@@ -95,8 +90,8 @@ class CategoriesDeleteView(DeleteView):
 
 
 class AdListView(ListView):
-    model = AD
-    queryset = AD.objects.order_by('-price')
+    model = Ad
+    queryset = Ad.objects.order_by('-price')
 
     def get(self, request, *args, **kwargs):
         super().get(request, *args, **kwargs)
@@ -129,7 +124,7 @@ class AdListView(ListView):
 
 
 class AdDetailView(DetailView):
-    model = AD
+    model = Ad
 
     def get(self, request, *args, **kwargs):
         super().get(request, *args, **kwargs)
@@ -149,7 +144,7 @@ class AdDetailView(DetailView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AdCreateView(CreateView):
-    model = AD
+    model = Ad
     fields = "__all__"
 
     def post(self, request, *args, **kwargs):
@@ -159,7 +154,7 @@ class AdCreateView(CreateView):
         author_id = get_object_or_404(User, pk=ad_data["author_id"])
         category_id = get_object_or_404(Category, pk=ad_data["category_id"])
 
-        ad = AD.objects.create(
+        ad = Ad.objects.create(
             name=ad_data["name"],
             author_id=author_id,
             price=ad_data["price"],
@@ -182,7 +177,7 @@ class AdCreateView(CreateView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AdUploadImage(UpdateView):
-    model = AD
+    model = Ad
     fields = "image"
 
     def post(self, request, *args, **kwargs):
@@ -204,7 +199,7 @@ class AdUploadImage(UpdateView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AdUpdateView(UpdateView):
-    model = AD
+    model = Ad
     fields = '__all__'
 
     def patch(self, request, *args, **kwargs):
@@ -237,7 +232,7 @@ class AdUpdateView(UpdateView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AdDeleteView(DeleteView):
-    model = AD
+    model = Ad
     success_url = '/'
 
     def delete(self, request, *args, **kwargs):

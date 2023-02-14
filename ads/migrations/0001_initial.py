@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='AD',
+            name='Ad',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('slug', models.SlugField()),

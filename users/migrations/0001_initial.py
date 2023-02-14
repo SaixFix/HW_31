@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('first_name', models.CharField(max_length=50, null=True)),
                 ('last_name', models.CharField(max_length=50, null=True)),
                 ('username', models.CharField(max_length=10, unique=True)),
-                ('role', models.CharField(choices=[('MB', 'member'), ('MD', 'moderator'), ('AD', 'admin')], max_length=2)),
+                ('role', models.CharField(choices=[('MB', 'member'), ('MD', 'moderator'), ('Ad', 'admin')], max_length=2)),
                 ('age', models.PositiveSmallIntegerField()),
                 ('location_id', models.ManyToManyField(to='users.location')),
             ],
