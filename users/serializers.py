@@ -6,12 +6,18 @@ from users.models import User, UserRoles, Location
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
+        fields = '__all__'
+
+
+class LocationPartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
         fields = ['name', 'lat', 'lng']
 
 
 class UserListSerializer(serializers.ModelSerializer):
     total_ads = serializers.IntegerField()
-    locations = LocationSerializer(
+    locations = LocationPartSerializer(
         read_only=True,
         many=True
     )

@@ -13,7 +13,6 @@ from rest_framework.viewsets import ModelViewSet
 from ads.models import Category, Ad
 from ads.serializers import CategorySerializer, AdDetailSerializer, AdListSerializer, AdCreateSerializer, \
     AdUpdateSerializer, AdDestroySerializer, AdUploadImageSerializer
-from users.models import User
 
 
 def hello(request):

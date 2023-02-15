@@ -20,9 +20,11 @@ from django.urls import path, include
 from rest_framework import routers
 
 from ads.views import hello, CategoryViewSet
+from users.views import LocationViewSet
 
 router = routers.SimpleRouter()
 router.register('cat', CategoryViewSet)
+router.register('location', LocationViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
