@@ -7,9 +7,10 @@ from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
+from rest_framework.viewsets import ModelViewSet
 
 from ads.models import Category, Ad
-from ads.serializers import CategoryListSerializer
+from ads.serializers import CategorySerializer
 from users.models import User
 
 
@@ -17,76 +18,10 @@ def hello(request):
     return JsonResponse({"status": "ok"}, safe=False)
 
 
-class CategoriesListView(ListView):
-    model = Category
-    queryset = Category.objects.order_by('name')
-
-    def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
-        categories = self.object_list
-
-        return JsonResponse(CategoryListSerializer(categories, many=True).data, safe=False)
-
-
-class CategoriesDetailView(DetailView):
-    model = Category
-
-    def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
-        self.object = self.get_object()
-
-        return JsonResponse({
-            'id': self.object.id,
-            'name': self.object.name
-        })
-
-
-@method_decorator(csrf_exempt, name='dispatch')
-class CategoriesCreateView(CreateView):
-    model = Category
-    fields = ['slug', 'name']
-
-    def post(self, request, *args, **kwargs):
-        category_data = json.loads(request.body)
-
-        category = Category.objects.create(name=category_data["name"])
-
-        return JsonResponse({
-            "id": category.id,
-            'name': category.name
-        })
-
-
-@method_decorator(csrf_exempt, name='dispatch')
-class CategoriesUpdateView(UpdateView):
-    model = Category
-    fields = ['name']
-
-    def patch(self, request, *args, **kwargs):
-        super().post(self, request, *args, **kwargs)
-        category_data = json.loads(request.body)
-
-        self.object.name = category_data['name']
-        self.object.save()
-
-        return JsonResponse({
-            "id": self.object.id,
-            'name': self.object.name
-        })
-
-
-@method_decorator(csrf_exempt, name='dispatch')
-class CategoriesDeleteView(DeleteView):
-    model = Category
-    success_url = '/'
-
-    def delete(self, request, *args, **kwargs):
-        cat = self.get_object()
-        super().delete(self, request, *args, **kwargs)
-
-        return JsonResponse({
-            "id": cat.pk
-        })
+class CategoryViewSet(ModelViewSet):
+    """"ViewSet с полным CRUD"""
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 
 class AdListView(ListView):
