@@ -32,10 +32,12 @@ class Ad(models.Model):
 
     @property
     def author_name(self):
+        """возвращает поля username из свянанной модели"""
         return self.author_id.username
 
     @property
     def cat_name(self):
+        """возвращает поля name из свянанной модели"""
         return self.category_id.name
 
 

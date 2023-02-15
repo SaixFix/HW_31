@@ -14,7 +14,7 @@ class AdListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ad
         fields = [
-            'name', 'author_id', 'price',
+            'id', 'name', 'author_id', 'price',
             'is_published', 'category_id'
         ]
 
@@ -28,3 +28,31 @@ class AdDetailSerializer(serializers.ModelSerializer):
         fields = ['id', 'slug', 'name', 'author_id', 'author_name',
                   'price', 'is_published', 'category_id', 'cat_name'
                   ]
+
+
+class AdCreateSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
+    image = serializers.ImageField(required=False)
+    is_published = serializers.BooleanField(required=False)
+
+    class Meta:
+        model = Ad
+        fields = '__all__'
+
+
+class AdUpdateSerializer(serializers.ModelSerializer):
+    author_id = serializers.PrimaryKeyRelatedField(read_only=True)
+    category_id = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = Ad
+        fields = [
+            'id', 'slug', 'name', 'price', 'author_id',
+            'is_published', 'description', 'category_id'
+        ]
+
+
+class AdDestroySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ad
+        fields = ['id']
