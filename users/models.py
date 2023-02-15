@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Count, Q
 from django.utils.translation import gettext_lazy as _
 
 
@@ -38,4 +39,6 @@ class User(models.Model):
 
     def __str__(self):
         return self.username
+
+
 

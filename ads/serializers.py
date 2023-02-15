@@ -56,3 +56,18 @@ class AdDestroySerializer(serializers.ModelSerializer):
     class Meta:
         model = Ad
         fields = ['id']
+
+
+class AdUploadImageSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
+    name = serializers.CharField(required=False)
+
+    class Meta:
+        model = Ad
+        fields = ['id', 'name', 'image']
+
+    def is_valid(self, *, raise_exception=False):
+        self._image = self.initial_data
+
+    def save(self, instance, validated_data):
+        ad = super().save()

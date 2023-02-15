@@ -12,7 +12,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from ads.models import Category, Ad
 from ads.serializers import CategorySerializer, AdDetailSerializer, AdListSerializer, AdCreateSerializer, \
-    AdUpdateSerializer, AdDestroySerializer
+    AdUpdateSerializer, AdDestroySerializer, AdUploadImageSerializer
 from users.models import User
 
 
@@ -41,26 +41,9 @@ class AdCreateView(CreateAPIView):
     serializer_class = AdCreateSerializer
 
 
-@method_decorator(csrf_exempt, name='dispatch')
-class AdUploadImage(UpdateView):
-    model = Ad
-    fields = "image"
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.image = request.FILES.get('image')
-        self.object.save()
-
-        return JsonResponse({
-            "id": self.object.id,
-            'name': self.object.name,
-            "author_id": self.object.author_id.username,
-            "price": self.object.price,
-            "description": self.object.description,
-            "is_published": self.object.is_published,
-            "category_id": self.object.category_id.name,
-            "image": self.object.image.url if self.object.image else None
-        })
+class AdUploadImage(UpdateAPIView):
+    queryset = Ad.objects.all()
+    serializer_class = AdUploadImageSerializer
 
 
 class AdUpdateView(UpdateAPIView):
