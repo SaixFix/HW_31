@@ -1,3 +1,2 @@
-# HW_28
-HomeWork 28. 
-## Project based on hw_27. Was added models with relashions, crud methods, and functions add images, sorting some results
+# HW_29
+## Базируется на HW_28, переписаны все все вьюшки под API на DRF, добавлены сериализаторы, добавлена возможность поиска по нескольким разным фильтрам.
