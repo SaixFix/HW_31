@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from ads.models import Category, Ad
+from users.models import User
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -9,21 +10,21 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
-
 class AdListSerializer(serializers.ModelSerializer):
-    author_id = serializers.IntegerField()
-    category_id = serializers.IntegerField()
-
     class Meta:
         model = Ad
-        field = '__all__'
+        fields = [
+            'name', 'author_id', 'price',
+            'is_published', 'category_id'
+        ]
 
 
 class AdDetailSerializer(serializers.ModelSerializer):
-    author_id = serializers.IntegerField()
-    category_id = serializers.IntegerField()
+    author_name = serializers.CharField()
+    cat_name = serializers.CharField()
 
     class Meta:
         model = Ad
-        field = '__all__'
+        fields = ['id', 'slug', 'name', 'author_id', 'author_name',
+                  'price', 'is_published', 'category_id', 'cat_name'
+                  ]

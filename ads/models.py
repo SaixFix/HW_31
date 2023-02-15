@@ -30,6 +30,14 @@ class Ad(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def author_name(self):
+        return self.author_id.username
+
+    @property
+    def cat_name(self):
+        return self.category_id.name
+
 
 
 
