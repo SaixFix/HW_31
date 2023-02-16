@@ -18,7 +18,7 @@ class CategoryViewSet(ModelViewSet):
 
 
 class AdListView(ListAPIView):
-    # queryset = Ad.objects.filter(location=author_id__locations__icontains).order_by('-price')
+    queryset = Ad.objects.order_by('-price')
     serializer_class = AdListSerializer
 
     def get(self, request, *args, **kwargs):
@@ -28,7 +28,7 @@ class AdListView(ListAPIView):
         category_id = request.GET.get('cat', None)
         if category_id:
             self.queryset = self.queryset.filter(
-                category_id__pk__icontains=category_id
+                category_id__pk__exact=category_id
             )
 
         # Функция поиска обьявлений по вхождению слова в названиях
@@ -43,6 +43,15 @@ class AdListView(ListAPIView):
         if name_text:
             self.queryset = self.queryset.filter(
                 author_id__locations__icontains=location
+            )
+
+        # Функция поиска обьявлений по диапазону цены
+        price_from = request.GET.get('price_from', None)
+        price_to = request.GET.get('price_to', None)
+        if price_from and price_to:
+            self.queryset = self.queryset.filter(
+                price__gte=price_from,
+                price__lte=price_to
             )
 
         return super().get(request, *args, **kwargs)
