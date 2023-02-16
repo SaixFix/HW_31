@@ -72,6 +72,7 @@ class AdUploadImage(UpdateAPIView):
     serializer_class = AdUploadImageSerializer
 
     def update(self, request, *args, **kwargs):
+        """функция загрузки изображений в модели AD"""
         self.object = self.get_object()
         self.object.image = request.FILES.get('image')
 

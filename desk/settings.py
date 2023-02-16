@@ -128,10 +128,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# TODO удалить старую пагинацию
-# переменная для подсчета количества обьектов на страницу
-OBJECT_ON_PAGE = 5
-
 # пагинация для DRF
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",

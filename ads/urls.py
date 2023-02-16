@@ -5,6 +5,7 @@ from django.urls import path
 from ads.views import *
 
 urlpatterns = [
+    path('hello/', hello, name='get_list_categories'),
     path('', AdListView.as_view(), name='get_list_ads'),
     path('<int:pk>/', AdDetailView.as_view(), name='get_ad_detail'),
     path('create/', AdCreateView.as_view(), name='create_categories'),
