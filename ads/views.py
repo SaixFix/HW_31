@@ -71,6 +71,12 @@ class AdUploadImage(UpdateAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdUploadImageSerializer
 
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.image = request.FILES.get('image')
+
+        return super().update(request, *args, **kwargs)
+
 
 class AdUpdateView(UpdateAPIView):
     queryset = Ad.objects.all()

@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from ads.models import Category, Ad
-from users.models import User
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -26,7 +25,7 @@ class AdDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ad
         fields = ['id', 'slug', 'name', 'author_id', 'author_name',
-                  'price', 'is_published', 'category_id', 'cat_name'
+                  'price', 'is_published', 'category_id', 'cat_name', 'image'
                   ]
 
 
@@ -61,13 +60,8 @@ class AdDestroySerializer(serializers.ModelSerializer):
 class AdUploadImageSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
     name = serializers.CharField(required=False)
+    image = serializers.ImageField()
 
     class Meta:
         model = Ad
         fields = ['id', 'name', 'image']
-
-    def is_valid(self, *, raise_exception=False):
-        self._image = self.initial_data
-
-    def save(self, instance, validated_data):
-        ad = super().save()
