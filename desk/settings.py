@@ -36,8 +36,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'ads',
-    'users'
+    'users',
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -132,4 +134,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 5,
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",  # активирует аунтификацию по JWT токену
+    ]
 }
+
+# константа указывающая где лежит пользователь джанго
+AUTH_USER_MODEL = 'authentication.User'
