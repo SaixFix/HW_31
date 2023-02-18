@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'ads',
     'users',
-    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -140,4 +139,4 @@ REST_FRAMEWORK = {
 }
 
 # константа указывающая где лежит пользователь джанго
-AUTH_USER_MODEL = 'authentication.User'
+AUTH_USER_MODEL = 'users.User'
