@@ -1,23 +1,15 @@
 from django.http import JsonResponse
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework.viewsets import ModelViewSet
 
-from ads.models import Category, Ad
-from ads.permissions import AdPersonalPermission, ReadOnly
-from ads.serializers import CategorySerializer, AdDetailSerializer, AdListSerializer, AdCreateSerializer, \
+from ads.models import Ad
+from ads.permissions import AdPersonalPermission
+from ads.serializers.ad import AdDetailSerializer, AdListSerializer, AdCreateSerializer, \
     AdUpdateSerializer, AdDestroySerializer, AdUploadImageSerializer
 
 
 def hello(request):
     return JsonResponse({"status": "ok"}, safe=False)
-
-
-class CategoryViewSet(ModelViewSet):
-    """"ViewSet с полным CRUD"""
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    permission_classes = [IsAdminUser | ReadOnly]
 
 
 class AdListView(ListAPIView):

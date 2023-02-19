@@ -4,7 +4,8 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from ads.views import hello, CategoryViewSet
+from ads.views.ad import hello
+from ads.views.cat import CategoryViewSet
 from users.views import LocationViewSet
 
 router = routers.SimpleRouter()
@@ -15,8 +16,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('', hello),
-    path('ad/', include('ads.urls')),
+    path('ad/', include('ads.urls.ad')),
     path('user/', include('users.urls')),
+    path('selection/', include('ads.urls.selection')),
 ]
 
 urlpatterns += router.urls

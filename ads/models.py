@@ -41,6 +41,20 @@ class Ad(models.Model):
         return self.category_id.name
 
 
+class Selection(models.Model):
+    slug = models.SlugField(max_length=50)
+    name = models.CharField(max_length=50)
+    author_id = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    ads = models.ManyToManyField(Ad)
+
+    class Meta:
+        verbose_name = 'Подборка'
+        verbose_name_plural = 'Подборки'
+
+    def __str__(self):
+        return self.name
+
+
 
 
 
