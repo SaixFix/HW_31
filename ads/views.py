@@ -1,8 +1,10 @@
 from django.http import JsonResponse
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.viewsets import ModelViewSet
 
 from ads.models import Category, Ad
+from ads.permissions import AdPersonalPermission
 from ads.serializers import CategorySerializer, AdDetailSerializer, AdListSerializer, AdCreateSerializer, \
     AdUpdateSerializer, AdDestroySerializer, AdUploadImageSerializer
 
@@ -60,16 +62,19 @@ class AdListView(ListAPIView):
 class AdDetailView(RetrieveAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdDetailSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 class AdCreateView(CreateAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdCreateSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 class AdUploadImage(UpdateAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdUploadImageSerializer
+    permission_classes = [AdPersonalPermission, IsAdminUser]
 
     def update(self, request, *args, **kwargs):
         """функция загрузки изображений в модели AD"""
@@ -82,8 +87,10 @@ class AdUploadImage(UpdateAPIView):
 class AdUpdateView(UpdateAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdUpdateSerializer
+    permission_classes = [AdPersonalPermission, IsAdminUser]
 
 
 class AdDeleteView(DestroyAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdDestroySerializer
+    permission_classes = [AdPersonalPermission, IsAdminUser]

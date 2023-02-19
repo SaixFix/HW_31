@@ -1,6 +1,5 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models import Count, Q
 from django.utils.translation import gettext_lazy as _
 
 
@@ -26,7 +25,7 @@ class UserRoles(models.TextChoices):
 
 
 class User(AbstractUser):
-    role = models.CharField(max_length=9, choices=UserRoles.choices)
+    role = models.CharField(max_length=9, choices=UserRoles.choices, default=UserRoles.MEMBER)
     age = models.PositiveSmallIntegerField()
     locations = models.ManyToManyField(Location)
 
@@ -36,6 +35,9 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+
 
 
 
