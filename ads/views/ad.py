@@ -3,7 +3,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView,
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from ads.models import Ad
-from ads.permissions import AdPersonalPermission
+from ads.permissions import AdPersonalPermission, AdModeratorPermission
 from ads.serializers.ad import AdDetailSerializer, AdListSerializer, AdCreateSerializer, \
     AdUpdateSerializer, AdDestroySerializer, AdUploadImageSerializer
 
@@ -80,10 +80,10 @@ class AdUploadImage(UpdateAPIView):
 class AdUpdateView(UpdateAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdUpdateSerializer
-    permission_classes = [AdPersonalPermission]
+    permission_classes = [AdPersonalPermission | IsAdminUser | AdModeratorPermission]
 
 
 class AdDeleteView(DestroyAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdDestroySerializer
-    permission_classes = [AdPersonalPermission]
+    permission_classes = [AdPersonalPermission | IsAdminUser | AdModeratorPermission]

@@ -15,3 +15,8 @@ class AdPersonalPermission(BasePermission):
 class ReadOnly(BasePermission):
     def has_permission(self, request, view):
         return request.method in SAFE_METHODS
+
+
+class AdModeratorPermission(BasePermission):
+    def has_permission(self, request, view):
+        return request.user and request.user.is_authenticated and request.user.role == 'moderator'
