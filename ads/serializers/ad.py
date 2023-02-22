@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from ads.models import Ad
+from ads.validators import check_not_true
 
 
 class AdPartSerializer(serializers.ModelSerializer):
@@ -35,7 +36,7 @@ class AdDetailSerializer(serializers.ModelSerializer):
 class AdCreateSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
     image = serializers.ImageField(required=False)
-    is_published = serializers.BooleanField(required=False)
+    is_published = serializers.BooleanField(required=False, validators=[check_not_true])
 
     class Meta:
         model = Ad

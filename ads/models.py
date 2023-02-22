@@ -1,8 +1,9 @@
+from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
 
 
 class Category(models.Model):
-    slug = models.SlugField(max_length=50)
+    slug = models.SlugField(max_length=10, validators=[MinLengthValidator(5)])
     name = models.CharField(max_length=100, unique=True)
 
     class Meta:
@@ -14,11 +15,11 @@ class Category(models.Model):
 
 
 class Ad(models.Model):
-    slug = models.SlugField(max_length=50)
-    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=10)
+    name = models.CharField(max_length=200, validators=[MinLengthValidator(10)])
     author_id = models.ForeignKey("users.User", on_delete=models.CASCADE)
-    price = models.IntegerField()
-    description = models.CharField(max_length=2000)
+    price = models.IntegerField(validators=[MinValueValidator(0)])
+    description = models.CharField(max_length=2000, null=True, blank=True)
     is_published = models.BooleanField(default=False)
     image = models.ImageField(upload_to='images/', null=True, blank=True)
     category_id = models.ForeignKey("Category", on_delete=models.SET_NULL, null=True)
@@ -42,7 +43,7 @@ class Ad(models.Model):
 
 
 class Selection(models.Model):
-    slug = models.SlugField(max_length=50)
+    slug = models.SlugField(max_length=10, validators=[MinLengthValidator(5)])
     name = models.CharField(max_length=50)
     author_id = models.ForeignKey("users.User", on_delete=models.CASCADE)
     ads = models.ManyToManyField(Ad)

@@ -10,4 +10,4 @@ class CategoryViewSet(ModelViewSet):
     """"ViewSet с полным CRUD"""
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAdminUser | ReadOnly]
+    # permission_classes = [IsAdminUser | ReadOnly]

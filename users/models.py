@@ -1,6 +1,9 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+from users.validators import check_email_blacklist
 
 
 class Location(models.Model):
@@ -26,8 +29,9 @@ class UserRoles(models.TextChoices):
 
 class User(AbstractUser):
     role = models.CharField(max_length=9, choices=UserRoles.choices, default=UserRoles.MEMBER)
-    age = models.PositiveSmallIntegerField()
+    age = models.PositiveSmallIntegerField(validators=[MinValueValidator(9)])
     locations = models.ManyToManyField(Location)
+    email = models.EmailField(unique=True, validators=[check_email_blacklist])
 
     class Meta:
         verbose_name = 'Пользователь'
